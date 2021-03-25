@@ -1,0 +1,82 @@
+get_data = "         "
+data_lists = [x for x in get_data]
+matrix = [[get_data[0], get_data[1], get_data[2]],
+[get_data[3], get_data[4], get_data[5]],
+[get_data[6], get_data[7], get_data[8]]]
+visual = f"""---------
+| {matrix[0][0]} {matrix[0][1]} {matrix[0][2]} |
+| {matrix[1][0]} {matrix[1][1]} {matrix[1][2]} |
+| {matrix[2][0]} {matrix[2][1]} {matrix[2][2]} |
+---------"""
+print(visual)
+
+def calc(get_data):
+    matrix = [[get_data[0], get_data[1], get_data[2]],
+    [get_data[3], get_data[4], get_data[5]],
+    [get_data[6], get_data[7], get_data[8]],
+    [get_data[0], get_data[3], get_data[6]],
+    [get_data[1], get_data[4], get_data[7]],
+    [get_data[2], get_data[5], get_data[8]],
+    [get_data[0], get_data[4], get_data[8]],
+    [get_data[6], get_data[4], get_data[2]]]
+    c = get_data.count("X") - get_data.count("O")
+    count = 0
+    hold = 0
+    for x in matrix:
+        count = count + 1
+        if x.count("X") == 3:
+            hold = hold + 1
+            value = "X wins"
+        elif x.count("O") == 3:
+            hold = hold + 1
+            value = "O wins"
+        if count == 8 and hold == 1:
+            return value
+        elif count == 8 and (hold == 2 or (c not in [1, 0, -1])):
+            return "Impossible"
+        elif count == 8 and hold == 0 and get_data.count(" ") == 0:
+            return "Draw"
+        #elif count == 8 and hold == 0 and get_data.count("_") >= 1:
+            #return "Game not finished"
+
+def tik_tactoe():
+    count = 0
+    while True:
+        try:
+            print("Enter the coordinates:")
+            x_axis, y_axis = input().split()
+            data = ((int(x_axis) - 1) + ((int(x_axis) - 1) * 2)) + (int(y_axis) - 1)
+            if matrix[int(x_axis) - 1][int(y_axis) - 1] != " ":
+                print("This cell is occupied! Choose another one!")
+                continue
+            elif matrix[int(x_axis) - 1][int(y_axis) - 1] == " ":
+                data_lists.pop(data)
+                if count % 2 == 0:
+                    data_lists.insert(data, "X")
+                else:
+                    data_lists.insert(data, "O")
+                count = count + 1
+                get_data = "".join(data_lists)
+                matrixs = [[get_data[0], get_data[1], get_data[2]],
+                [get_data[3], get_data[4], get_data[5]],
+                [get_data[6], get_data[7], get_data[8]]]
+                visual = f"""---------
+| {matrixs[0][0]} {matrixs[0][1]} {matrixs[0][2]} |
+| {matrixs[1][0]} {matrixs[1][1]} {matrixs[1][2]} |
+| {matrixs[2][0]} {matrixs[2][1]} {matrixs[2][2]} |
+---------"""
+                print(visual)
+                if calc(get_data) in ["X wins", "O wins", "Impossible", "Draw"]:
+                    print(calc(get_data))
+                    break
+                else:
+                    continue
+        except ValueError:
+                print("You should enter numbers!")
+        except IndexError:
+                print("Coordinates should be from 1 to 3!")
+
+
+tik_tactoe()
+
+
